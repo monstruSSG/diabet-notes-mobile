@@ -3,12 +3,15 @@ import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { ThemeProvider } from 'react-native-elements';
 
 import Login from './src/screens/Login/Login';
 import Nutritionists from './src/screens/Nutritionists/Nutritionists';
 import Overview from './src/screens/Overview/Overview';
 import PersonalDiet from './src/screens/PersonalDiet/PersonalDiet';
 import Values from './src/screens/Values/Values';
+
+import elementsTheme from './elementsStyles';
 
 const Stack = createStackNavigator();
 
@@ -27,12 +30,14 @@ const Data = () => {
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Data">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Data" component={Data} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeProvider theme={elementsTheme}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Data" component={Data} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
 

@@ -10,7 +10,15 @@ const elementsTheme = {
         warning: '#fdd835'
     },
     Button: {
-        raised: true
+        raised: true,
+        containerStyle: [{
+            width: '100%',
+        }]
+    },
+    SocialIcon: {
+        style: {
+            width: '100%',
+        }
     },
     Header: {
         containerStyle: [{

@@ -4,8 +4,7 @@ import { View, StyleSheet } from 'react-native';
 
 let styles = StyleSheet.create({
     container: {
-        width: '100%',
-
+        width: '100%'
     }
 })
 

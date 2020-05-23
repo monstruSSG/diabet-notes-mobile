@@ -4,6 +4,7 @@ const elementsTheme = {
         secondary: '#001970',
         grey0: '#f5f5f5',
         grey1: '#bdbdbd',
+        grey2: '#373737',
         searchBg: '#666ad1',
         success: '#00600f',
         error: '#f4511e',
@@ -13,6 +14,11 @@ const elementsTheme = {
         raised: true,
         containerStyle: [{
             width: '100%',
+        }]
+    },
+    Card: {
+        titleStyle: [{
+            color: '#373737'
         }]
     },
     SocialIcon: {

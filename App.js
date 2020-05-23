@@ -28,15 +28,6 @@ const Data = () => {
       barStyle={{ backgroundColor: '#303f9f' }}
     >
       <TabNavigator.Screen
-        name="Values"
-        component={Values}
-        options={{
-          tabBarLabel: 'Values',
-          tabBarIcon: ({ color }) => (
-            <Icon name="assignment" color={color} size={25} />
-          ),
-        }} />
-      <TabNavigator.Screen
         name="Overview"
         component={Overview}
         options={{
@@ -46,6 +37,15 @@ const Data = () => {
           ),
         }}
       />
+      <TabNavigator.Screen
+        name="Values"
+        component={Values}
+        options={{
+          tabBarLabel: 'Values',
+          tabBarIcon: ({ color }) => (
+            <Icon name="assignment" color={color} size={25} />
+          ),
+        }} />
       <TabNavigator.Screen
         name="Nutritionists"
         component={Nutritionists}
@@ -84,7 +84,7 @@ const App = () => {
   return (
     <ThemeProvider theme={elementsTheme}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Data">
           <Stack.Screen
             name="Login"
             component={Login}

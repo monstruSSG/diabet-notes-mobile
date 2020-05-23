@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { Button, Text, SocialIcon } from 'react-native-elements';
+import { Text, SocialIcon } from 'react-native-elements';
 
 import Form from '../../common/FormGenerator/FormGenerator'
 
@@ -13,8 +13,21 @@ const Login = () => {
                 <Text h1 style={{ color: '#303f9f' }}>DiabetNotes</Text>
             </View>
             <View style={[styles.formContainer]}>
-                <Form />
-                <Text style={{ paddingTop: 20, paddingBottom: 20, color: '#bdbdbd' }}>--------------- OR ---------------</Text>
+                <Form
+                    fields={[
+                        {
+                            name: 'email',
+                            placeholder: 'Email...'
+                        },
+                        {
+                            name: 'password',
+                            placeholder: 'Password...'
+                        }
+                    ]}
+                    submitText='Sign in'
+                    onSubmitPressed={data => alert(JSON.stringify(data))}
+                />
+                <Text style={{ paddingTop: 20, paddingBottom: 20, color: '#bdbdbd' }}>------------------------- OR -------------------------</Text>
                 <SocialIcon
                     title='Sign In With Facebook'
                     button

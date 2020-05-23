@@ -135,25 +135,25 @@ const Overview = props => {
                 title='Last 7 days'
             >
                 {HipoHiperNormalChart()}
-                <Button title='Notes' />
+                <Button title='Notes' onPress={() => props.navigation.navigate('Values')} />
             </Card>
             <Card
                 title='Last 7 days'
             >
                 {ValuesAverage()}
-                <Button title='Notes' />
+                <Button title='Notes' onPress={() => props.navigation.navigate('Values')} />
             </Card>
             <Card
                 title='Last 7 days'
             >
                 {HipoHiperNormalChart()}
-                <Button title='Notes' />
+                <Button title='Notes' onPress={() => props.navigation.navigate('Values')} />
             </Card>
             <Card
                 title='Today values'
             >
                 {Values()}
-                <Button title='Notes' />
+                <Button title='Notes' onPress={() => props.navigation.navigate('Values')} />
             </Card>
         </ScrollView>
     );

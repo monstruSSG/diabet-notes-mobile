@@ -10,7 +10,7 @@ const Login = () => {
             behavior={Platform.OS == "ios" ? "padding" : "height"}
             style={[styles.container]}>
             <View style={[styles.center, { display: 'flex', height: '40%', justifyContent: 'flex-start' }]}>
-                <Text h1 style={{ color: '#303f9f' }}>DiabetNotes</Text>
+                <Text h1 style={{ color: '#373737' }}>DiabetNotes</Text>
             </View>
             <View style={[styles.formContainer]}>
                 <Form

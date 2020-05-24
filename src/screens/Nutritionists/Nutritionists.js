@@ -46,6 +46,7 @@ const Nutritionists = () => {
     return (
         <View style={[styles.max, styles.center]}>
             <Card
+                title={`${13} nutritionists`}
                 containerStyle={[styles.card]}
             >
                 <ScrollView style={[styles.max]}>

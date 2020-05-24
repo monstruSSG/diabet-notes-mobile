@@ -35,7 +35,7 @@ const PersonalDiet = () => {
             label: 'Debute year'
         },
         {
-            name: 'knowProblems',
+            name: 'knownProblems',
             placeholder: 'Any known problems?',
             label: 'Known problem'
         }

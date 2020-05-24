@@ -48,13 +48,13 @@ const PersonalDiet = () => {
     let getPlan = () => PLAN_REQUESTS.get()
         .then(plan => {
             Object.keys(plan).forEach(key => {
-                if(plan[key] && plan[key].length) {
+                if(plan[key]) {
                     let fieldIndex = fields.findIndex(field => field.name === key)
                 
                     if(fieldIndex > -1) { 
                         let newFields = [...fields]
 
-                        newFields[fieldIndex].defaultValue = plan[key]
+                        newFields[fieldIndex].defaultValue = String(plan[key])
 
                         setFields(newFields)
                     }

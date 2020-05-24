@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Card, ListItem, Button, Text } from 'react-native-elements';
+import { Card, ListItem, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import * as VALUES_REQUESTS from '../../requests/values';

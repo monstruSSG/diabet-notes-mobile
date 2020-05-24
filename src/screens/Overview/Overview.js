@@ -96,23 +96,23 @@ const HipoHiperNormalChart = props => {
 const Values = props => {
     let items = [
         {
-            name: '100 g/100mg',
-            subtitle: 'Vice President'
+            name: '100 mg/dL',
+            subtitle: 'Am mancat mai mult'
         }, {
-            name: '100 g/100mg',
-            subtitle: 'Vice President'
+            name: '100 mg/dL',
+            subtitle: 'Am alergat si nu am facut corectie'
         }, {
-            name: '100 g/100mg',
-            subtitle: 'Vice President'
+            name: '100 mg/dL',
+            subtitle: 'Am alergat si nu am facut corectie'
         }, {
-            name: '100 g/100mg',
-            subtitle: 'Vice President'
+            name: '100 mg/dL',
+            subtitle: 'Am alergat si nu am facut corectie'
         }, {
-            name: '100 g/100mg',
-            subtitle: 'Vice President'
+            name: '100 mg/dL',
+            subtitle: 'Am alergat si nu am facut corectie'
         }, {
-            name: '100 g/100mg',
-            subtitle: 'Vice President'
+            name: '100 mg/dL',
+            subtitle: 'Am alergat si nu am facut corectie'
         },
     ]
 
@@ -123,6 +123,10 @@ const Values = props => {
                 title={item.name}
                 subtitle={item.subtitle}
                 bottomDivider
+                rightTitle="30/45"
+                rightSubtitle="Rapida/Lenta"
+                badge={{badgeStyle: {backgroundColor: '#f4511e'}}}
+
             />)}
         </>
     )

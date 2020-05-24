@@ -3,8 +3,14 @@ import { View, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { Text, SocialIcon } from 'react-native-elements';
 
 import Form from '../../common/FormGenerator/FormGenerator'
+import * as LOGIN_REQUESTS from '../../requests/login'
 
-const Login = () => {
+const Login = props => {
+    const loginHandler = (email, password) => {
+        return LOGIN_REQUESTS.login(email, password)
+            .then(() => props.navigation.navigate('Data'))
+    }
+    
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -25,7 +31,7 @@ const Login = () => {
                         }
                     ]}
                     submitText='Sign in'
-                    onSubmitPressed={data => alert(JSON.stringify(data))}
+                    onSubmitPressed={({email, password}) => loginHandler(email, password)}
                 />
                 <Text style={{ paddingTop: 20, paddingBottom: 20, color: '#bdbdbd' }}>------------------------- OR -------------------------</Text>
                 <SocialIcon

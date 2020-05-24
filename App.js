@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { ThemeProvider, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { View } from 'react-native';
 
 import Login from './src/screens/Login/Login';
 import Nutritionists from './src/screens/Nutritionists/Nutritionists';
@@ -13,6 +12,7 @@ import Overview from './src/screens/Overview/Overview';
 import PersonalDiet from './src/screens/PersonalDiet/PersonalDiet';
 import Values from './src/screens/Values/Values';
 import Ranking from './src/screens/Ranking/Ranking';
+import * as LOGIN_REQUESTS from './src/requests/login';
 
 import elementsTheme from './elementsStyles';
 
@@ -81,6 +81,7 @@ const Data = () => {
 }
 
 const App = () => {
+  
   return (
     <ThemeProvider theme={elementsTheme}>
       <NavigationContainer>

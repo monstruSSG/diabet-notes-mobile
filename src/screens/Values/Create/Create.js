@@ -13,19 +13,23 @@ const Create = props => (
             fields={[
                 {
                     name: 'value',
-                    placeholder: '103 mg/dL'
+                    placeholder: '103 mg/dL',
+                    label: 'Value'
                 },
                 {
                     name: 'comment',
-                    placeholder: 'I eat more then I should have eaten'
+                    placeholder: 'I eat more then I should have eaten',
+                    label: 'Comment'
                 },
                 {
                     name: 'slowInsulin',
-                    placeholder: 'Slow insulin'
+                    placeholder: '10 units',
+                    label: 'Slow insulin'
                 },
                 {
                     name: 'fastInsulin',
-                    placeholder: 'Fast insulin'
+                    placeholder: '5 units',
+                    label: 'Fast insluin'
                 }
             ]}
             submitText='Add'

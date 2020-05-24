@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Input } from 'react-native-elements';
 import { View, StyleSheet } from 'react-native';
 
@@ -11,9 +11,11 @@ let styles = StyleSheet.create({
 let FormInput = props => {
     return (
         <View style={[styles.container, { ...props.styles }]}>
-            <Input 
+            <Input
                 placeholder={props.placeholder}
                 onChangeText={props.onChange}
+                value={props.defaultValue ? props.defaultValue : null}
+                {...props}
             />
         </View>
     )

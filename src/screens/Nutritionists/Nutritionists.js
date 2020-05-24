@@ -49,7 +49,7 @@ const Nutritionists = () => {
                 title={`${13} nutritionists`}
                 containerStyle={[styles.card]}
             >
-                <ScrollView style={[styles.max, {height: '90%'}]}>
+                <ScrollView style={[styles.max, { height: '90%' }]}>
                     {items.map((l, i) => (
                         <ListItem
                             key={i}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import Input from './Input/Input';
@@ -16,7 +16,7 @@ let FormGenerator = props => {
 
         let inputIndex = newFormFields.findIndex(field => field.name === name);
 
-        if(inputIndex < 0) return;
+        if (inputIndex < 0) return;
 
         newFormFields[inputIndex].value = value;
 
@@ -33,13 +33,25 @@ let FormGenerator = props => {
 
     return (
         <View style={[styles.container]}>
-            {formFieldsData.map((field, index) => <Input
-                key={index}
-                onChange={value => onInputChange(field.name, value)}
-                name={field.name}
-                value={field.value}
-                placeholder={field.placeholder}
-            />)}
+            {props.scrollable ? <ScrollView style={[styles.scrollable]}>
+                {formFieldsData.map((field, index) => <Input
+                    key={index}
+                    onChange={value => onInputChange(field.name, value)}
+                    name={field.name}
+                    value={field.value}
+                    placeholder={field.placeholder}
+                    {...field}
+                />)}
+            </ScrollView> :
+                formFieldsData.map((field, index) => <Input
+                    key={index}
+                    onChange={value => onInputChange(field.name, value)}
+                    name={field.name}
+                    value={field.value}
+                    placeholder={field.placeholder}
+                    {...field}
+                />)
+            }
             <Button
                 title={props.submitText}
                 onPress={() => props.onSubmitPressed(onSubmit())}
@@ -53,6 +65,10 @@ let styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    scrollable: {
+        width: '100%',
+        height: '80%'
     }
 })
 

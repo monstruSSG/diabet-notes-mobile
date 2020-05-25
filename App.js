@@ -13,6 +13,9 @@ import PersonalDiet from './src/screens/PersonalDiet/PersonalDiet';
 import Values from './src/screens/Values/Values';
 import Reminders from './src/screens/Reminders/Reminders';
 import * as LOGIN_REQUESTS from './src/requests/login';
+import NutritionistSettings from './src/screens/NutritionistSettings/NutritionistSettings'
+import PatientDetails from './src/screens/PatientDetails/PatientDetails'
+import Patients from './src/screens/Patients/Patient'
 
 import elementsTheme from './elementsStyles';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -80,6 +83,40 @@ const Data = () => {
     </TabNavigator.Navigator>
   );
 }
+
+const NutritionistData = () => {
+  const TabNavigator = createMaterialBottomTabNavigator();
+
+  return (
+    <TabNavigator.Navigator
+      activeColor="#fff"
+      inactiveColor="#f5f5f5"
+      barStyle={{ backgroundColor: '#303f9f' }}
+    >
+      <TabNavigator.Screen
+        name="Patients"
+        component={Patients}
+        options={{
+          tabBarLabel: 'Patients',
+          tabBarIcon: ({ color }) => (
+            <Icon name="assignment" color={color} size={25} />
+          ),
+        }}
+      />
+      <TabNavigator.Screen
+        name="NutritionistSettings"
+        component={NutritionistSettings}
+        options={{
+          tabBarLabel: 'Configuration',
+          tabBarIcon: ({ color }) => (
+            <Icon name="account-box" color={color} size={25} />
+          ),
+        }}
+      />
+    </TabNavigator.Navigator>
+  );
+}
+
 
 const AuthContext = React.createContext();
 
@@ -155,7 +192,7 @@ const App = () => {
             ) : (
                 <Stack.Screen
                   name="Data"
-                  component={Data}
+                  component={NutritionistData}
                   options={{
                     header: () => <Header
                       centerComponent={{

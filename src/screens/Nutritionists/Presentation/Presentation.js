@@ -40,7 +40,7 @@ let Presentation = props => {
                     bottomDivider />
                 <Button
                     title={`Request ${user.firstName} manage you`}
-                    onPress={props.onRequestPressed}
+                    onPress={props.onManagePressed}
                 />
             </View>
         </Modal>

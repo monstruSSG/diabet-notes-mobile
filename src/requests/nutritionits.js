@@ -11,3 +11,9 @@ export const getById = async id => {
 
     return { ...data }
 }
+
+export const addPatient = async id => {
+    let { data } = await axios.patch('/users/nutritionists/' + id + '/addPatient')
+
+    return { ...data }
+}

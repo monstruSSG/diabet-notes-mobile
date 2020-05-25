@@ -11,7 +11,7 @@ import Nutritionists from './src/screens/Nutritionists/Nutritionists';
 import Overview from './src/screens/Overview/Overview';
 import PersonalDiet from './src/screens/PersonalDiet/PersonalDiet';
 import Values from './src/screens/Values/Values';
-import Ranking from './src/screens/Ranking/Ranking';
+import Reminders from './src/screens/Reminders/Reminders';
 import * as LOGIN_REQUESTS from './src/requests/login';
 
 import elementsTheme from './elementsStyles';
@@ -68,10 +68,10 @@ const Data = () => {
         }}
       />
       <TabNavigator.Screen
-        name="Ranking"
-        component={Ranking}
+        name="Reminders"
+        component={Reminders}
         options={{
-          tabBarLabel: 'Ranking',
+          tabBarLabel: 'Reminders',
           tabBarIcon: ({ color }) => (
             <Icon name="subject" color={color} size={25} />
           ),
@@ -84,35 +84,32 @@ const Data = () => {
 const AuthContext = React.createContext();
 
 const App = () => {
-  const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userToken: action.token,
-            isLoading: false,
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignout: false,
-            userToken: action.token,
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignout: true,
-            userToken: null,
-          };
-      }
-    },
-    {
-      isLoading: true,
-      isSignout: false,
-      userToken: null,
+  const [state, dispatch] = React.useReducer((prevState, action) => {
+    switch (action.type) {
+      case 'RESTORE_TOKEN':
+        return {
+          ...prevState,
+          userToken: action.token,
+          isLoading: false,
+        };
+      case 'SIGN_IN':
+        return {
+          ...prevState,
+          isSignout: false,
+          userToken: action.token,
+        };
+      case 'SIGN_OUT':
+        return {
+          ...prevState,
+          isSignout: true,
+          userToken: null,
+        };
     }
-  );
+  }, {
+    isLoading: true,
+    isSignout: false,
+    userToken: null,
+  });
 
   React.useEffect(() => {
     const bootstrapAsync = async () => {
@@ -130,25 +127,22 @@ const App = () => {
     bootstrapAsync();
   }, []);
 
-  const authContext = React.useMemo(
-    () => ({
-      signIn: async (email, password) => {
-        let result = await LOGIN_REQUESTS.login(email, password)
+  const authContext = React.useMemo(() => ({
+    signIn: async (email, password) => {
+      let result = await LOGIN_REQUESTS.login(email, password)
 
-        await AsyncStorage.setItem('token', result.token)
+      await AsyncStorage.setItem('token', result.token)
 
-        dispatch({ type: 'SIGN_IN', token: result.token });
-      },
-      signOut: async () => {
-        await AsyncStorage.removeItem('token')
-        dispatch({ type: 'SIGN_OUT' })
-      },
-      signUp: async data => {
-        dispatch({ type: 'SIGN_IN', token: 'our_token' });
-      },
-    }),
-    []
-  );
+      dispatch({ type: 'SIGN_IN', token: result.token });
+    },
+    signOut: async () => {
+      await AsyncStorage.removeItem('token')
+      dispatch({ type: 'SIGN_OUT' })
+    },
+    signUp: async data => {
+      dispatch({ type: 'SIGN_IN', token: 'our_token' });
+    },
+  }), []);
 
   return (
     <ThemeProvider theme={elementsTheme}>

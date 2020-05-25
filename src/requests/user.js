@@ -5,3 +5,9 @@ export const get = async () => {
 
     return { ...data }
 }
+
+export const getMe = async () => {
+    let { data } = await axios.get('/users/me')
+
+    return { ...data }
+}

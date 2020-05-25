@@ -30,11 +30,23 @@ const Nutritionists = () => {
                 visible={showPresentation}
                 userId={selectedUserId}
                 onClose={() => { setShowPresentation(false); setSelectedUserId(null) }}
+                onManagePressed={() => NUTRITIONISTS_REQUESTS.addPatient(selectedUserId)
+                    .then(() => setShowPresentation(false))}
             />
             <Card
                 title={`${count} nutritionists`}
                 containerStyle={[styles.card]}
             >
+                <ListItem
+                    leftIcon={
+                        <Icon
+                            name="exclamation"
+                            size={35}
+                        />
+                    }
+                    title='Select a nutritionist'
+                    subtitle='In order to get the most out of DiabetNotes select a nutritionist'
+                    bottomDivider />
                 <ScrollView style={[styles.max, { height: '90%' }]}>
                     {nutritionists.map((l, i) => (
                         <ListItem

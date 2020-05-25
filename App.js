@@ -15,6 +15,7 @@ import Ranking from './src/screens/Ranking/Ranking';
 import * as LOGIN_REQUESTS from './src/requests/login';
 
 import elementsTheme from './elementsStyles';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
 
@@ -80,33 +81,103 @@ const Data = () => {
   );
 }
 
+const AuthContext = React.createContext();
+
 const App = () => {
-  
+  const [state, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'RESTORE_TOKEN':
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'SIGN_IN':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case 'SIGN_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: null,
+          };
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      userToken: null,
+    }
+  );
+
+  React.useEffect(() => {
+    const bootstrapAsync = async () => {
+      let userToken;
+
+      try {
+        userToken = await AsyncStorage.getItem('token');
+      } catch (e) {
+        userToken = null
+      }
+
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+    };
+
+    bootstrapAsync();
+  }, []);
+
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async (email, password) => {
+        let result = await LOGIN_REQUESTS.login(email, password)
+
+        await AsyncStorage.setItem('token', result.token)
+
+        dispatch({ type: 'SIGN_IN', token: result.token });
+      },
+      signOut: async () => {
+        await AsyncStorage.removeItem('token')
+        dispatch({ type: 'SIGN_OUT' })
+      },
+      signUp: async data => {
+        dispatch({ type: 'SIGN_IN', token: 'our_token' });
+      },
+    }),
+    []
+  );
+
   return (
     <ThemeProvider theme={elementsTheme}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Data">
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ header: () => null }}
-          />
-          <Stack.Screen
-            name="Data"
-            component={Data}
-            options={{
-              header: () => <Header
-                centerComponent={{
-                  text: 'DiabetNotes',
-                  style: {
-                    color: '#fff',
-                    fontSize: 25
-                  }
-                }} />
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          <Stack.Navigator>
+
+            {state.userToken == null ? (
+              <Stack.Screen name="Login" component={Login} options={{ header: () => null }} />
+            ) : (
+                <Stack.Screen
+                  name="Data"
+                  component={Data}
+                  options={{
+                    header: () => <Header
+                      centerComponent={{
+                        text: 'DiabetNotes',
+                        style: {
+                          color: '#fff',
+                          fontSize: 25
+                        }
+                      }} />
+                  }}
+                />
+              )}
+          </Stack.Navigator>
+        </NavigationContainer>
+
+      </AuthContext.Provider>
     </ThemeProvider>
   );
 }

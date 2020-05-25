@@ -5,7 +5,9 @@ import { View, StyleSheet } from 'react-native';
 const Modal = props => (
     <View>
         <Overlay isVisible={props.visible} onBackdropPress={props.onClose} overlayStyle={[styles.center, props.size ? props.size : styles.max]}>
-            {props.children}
+            <View style={[styles.max]}>
+                {props.children}
+            </View>
         </Overlay>
     </View>
 );
@@ -19,6 +21,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex'
+    },
+    max: {
+        width: '100%',
+        height: '100%'
     }
 })
 

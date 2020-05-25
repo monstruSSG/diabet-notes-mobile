@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import { Card, Button, ListItem } from 'react-native-elements';
 import { StackedBarChart, YAxis, LineChart, Grid } from 'react-native-svg-charts';
+import moment from 'moment'
 
-const ValuesAverage = props => {
-    const data = [100, 200, 333, -50, 100, 200, 155]
+import * as REPORTS_REQUESTS from '../../requests/report'
+
+const ValuesAverage = values => {
+    const data = values && values.length ? values.map(value => Number(value)) : []
 
     const contentInset = { top: 20, bottom: 20 }
 
@@ -32,51 +35,20 @@ const ValuesAverage = props => {
     )
 }
 
-const HipoHiperNormalChart = props => {
-    const data = [
-        {
-            month: new Date(2015, 0, 1),
-            hipo: 2,
-            good: 10,
-            hiper: 5
-        },
-        {
-            month: new Date(2015, 1, 1),
-            hipo: 2,
-            good: 5,
-            hiper: 5
-        },
-        {
-            month: new Date(2015, 2, 1),
-            hipo: 4,
-            good: 3,
-            hiper: 2
-        },
-        {
-            month: new Date(2015, 2, 1),
-            hipo: 5,
-            good: 2,
-            hiper: 6
-        },
-        {
-            month: new Date(2015, 2, 1),
-            hipo: 2,
-            good: 3,
-            hiper: 5
-        },
-        {
-            month: new Date(2015, 2, 1),
-            hipo: 2,
-            good: 3,
-            hiper: 5
-        },
-        {
-            month: new Date(2015, 2, 1),
-            hipo: 2,
-            good: 3,
-            hiper: 5
+const HipoHiperNormalChart = values => {
+    const data = values && values.length ? values.map(value => {
+        let date = moment(value.date)
+        let day = date.day()
+        let year = date.year()
+        let month = date.month()
+
+        return {
+            hipo: value.low,
+            hiper: value.high,
+            good: value.good,
+            day: new Date(year, month, day)
         }
-    ]
+    }) : []
 
     const colors = ['#f4511e', '#7cb342', '#fdd835']
     const keys = ['hipo', 'good', 'hiper']
@@ -93,70 +65,52 @@ const HipoHiperNormalChart = props => {
     )
 }
 
-const Values = props => {
-    let items = [
-        {
-            name: '100 mg/dL',
-            subtitle: 'Am mancat mai mult'
-        }, {
-            name: '100 mg/dL',
-            subtitle: 'Am alergat si nu am facut corectie'
-        }, {
-            name: '100 mg/dL',
-            subtitle: 'Am alergat si nu am facut corectie'
-        }, {
-            name: '100 mg/dL',
-            subtitle: 'Am alergat si nu am facut corectie'
-        }, {
-            name: '100 mg/dL',
-            subtitle: 'Am alergat si nu am facut corectie'
-        }, {
-            name: '100 mg/dL',
-            subtitle: 'Am alergat si nu am facut corectie'
-        },
-    ]
+const Values = values => {
+    let items = values && values.length ? values : []
 
     return (
         <>
             {items.map((item, index) => <ListItem
                 key={index}
-                title={item.name}
-                subtitle={item.subtitle}
+                title={item.value}
+                subtitle={item.comment}
                 bottomDivider
-                rightTitle="30/45"
-                rightSubtitle="Rapida/Lenta"
-                badge={{badgeStyle: {backgroundColor: '#f4511e'}}}
-
+                rightTitle={`${item.fastInsulin}/${item.slowInsulin}`}
+                rightSubtitle='Rapida/Lenta'
+                badge={{ badgeStyle: { backgroundColor: '#f4511e' } }}
             />)}
         </>
     )
 }
 
 const Overview = props => {
+    let [reports, setReports] = useState({})
+
+    useEffect(() => {
+        getReports()
+    }, [])
+
+    let getReports = () => REPORTS_REQUESTS.get()
+        .then(setReports)
+
     return (
         <ScrollView style={[styles.container]}>
             <Card
                 title='Last 7 days'
             >
-                {HipoHiperNormalChart()}
+                {HipoHiperNormalChart(reports.lastDaysCount)}
                 <Button title='Notes' onPress={() => props.navigation.navigate('Values')} />
             </Card>
             <Card
                 title='Last 7 days'
             >
-                {ValuesAverage()}
-                <Button title='Notes' onPress={() => props.navigation.navigate('Values')} />
-            </Card>
-            <Card
-                title='Last 7 days'
-            >
-                {HipoHiperNormalChart()}
+                {ValuesAverage(reports.allValues)}
                 <Button title='Notes' onPress={() => props.navigation.navigate('Values')} />
             </Card>
             <Card
                 title='Today values'
             >
-                {Values()}
+                {Values(reports.todayValues)}
                 <Button title='Notes' onPress={() => props.navigation.navigate('Values')} />
             </Card>
         </ScrollView>

@@ -33,17 +33,6 @@ const Login = props => {
                     submitText='Sign in'
                     onSubmitPressed={({email, password}) => loginHandler(email, password)}
                 />
-                <Text style={{ paddingTop: 20, paddingBottom: 20, color: '#bdbdbd' }}>------------------------- OR -------------------------</Text>
-                <SocialIcon
-                    title='Sign In With Facebook'
-                    button
-                    type='facebook'
-                />
-                <SocialIcon
-                    title='Sign In With Google'
-                    button
-                    type='google'
-                />
             </View>
         </KeyboardAvoidingView>
     );

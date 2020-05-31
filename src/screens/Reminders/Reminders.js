@@ -21,7 +21,6 @@ const Ranking = () => {
                 title={`Reminders`}
                 containerStyle={[styles.card]}
             >
-                <ImagePicker />
                 {user && !user.nutritionist ? <ListItem
                     leftIcon={
                         <Icon
@@ -41,7 +40,7 @@ const Ranking = () => {
                     }
                     rightIcon={
                         <Icon
-                            name="right"
+                            name="exclamation"
                             size={35}
                         />
                     }
@@ -82,7 +81,7 @@ const Ranking = () => {
                     bottomDivider
                     onPress={() => Linking.openURL(`tel:${user.nutritionist.phoneNumber || ''}`)}
                 />
-                {user && user.nutritionist ? <ListItem
+                {/* {user && user.nutritionist ? <ListItem
                     leftIcon={
                         <Icon
                             name="woman"
@@ -97,7 +96,7 @@ const Ranking = () => {
                     }
                     title={`Doctor ${user.nutritionist.firstName || ''} ${user.nutritionist.lastName || ''}`}
                     subtitle={`${user.nutritionist.country || ''} ${user.nutritionist.city || ''} ${user.nutritionist.region || ''}`}
-                    bottomDivider /> : null}
+                    bottomDivider /> : null} */}
             </Card>
         </View>
     );

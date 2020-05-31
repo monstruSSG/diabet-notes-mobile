@@ -175,7 +175,7 @@ const App = () => {
     hasPermission()
       .then(async enabled => {
         if (!enabled) return
-
+        
 
         notificationEvent = messaging().onMessage(data => {
           //Handle notification

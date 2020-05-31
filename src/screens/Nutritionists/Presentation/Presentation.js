@@ -4,6 +4,7 @@ import { Image, ListItem, Button } from 'react-native-elements'
 
 import Modal from '../../../common/Modal'
 import * as NUTRITIONISTS_REQUESTS from '../../../requests/nutritionits'
+import { BASE_URL } from '../../../utils/config'
 
 let Presentation = props => {
     let [user, setUser] = useState({})
@@ -12,7 +13,6 @@ let Presentation = props => {
         if (props.userId) NUTRITIONISTS_REQUESTS.getById(props.userId)
             .then(user => setUser(user))
     }, [props.userId])
-
     return (
         <Modal
             size={[styles.container]}
@@ -21,7 +21,7 @@ let Presentation = props => {
         >
             <View style={[styles.photoContainer]}>
                 <Image
-                    source={{ uri: user.clinicImage || 'https://image.shutterstock.com/image-photo/bright-spring-view-cameo-island-260nw-1048185397.jpg' }}
+                    source={{ uri: user.nutritionstPhoto ? BASE_URL + '/files/' + user.nutritionstPhoto : 'https://image.shutterstock.com/image-photo/bright-spring-view-cameo-island-260nw-1048185397.jpg' }}
                     style={styles.max}
                 />
             </View>

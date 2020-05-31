@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { ThemeProvider, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Firebase from '@react-native-firebase/app';
+import messaging from '@react-native-firebase/messaging';
 
 import Login from './src/screens/Login/Login';
 import Nutritionists from './src/screens/Nutritionists/Nutritionists';
@@ -16,6 +18,7 @@ import * as LOGIN_REQUESTS from './src/requests/login';
 import NutritionistSettings from './src/screens/NutritionistSettings/NutritionistSettings'
 import PatientDetails from './src/screens/PatientDetails/PatientDetails'
 import Patients from './src/screens/Patients/Patient'
+import Alert from './src/common/Alert'
 
 import elementsTheme from './elementsStyles';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -149,8 +152,36 @@ const App = () => {
     isSignout: false,
     userToken: null,
   });
+  const [showAlert, setShowAlert] = useState(false)
+
+  const hasPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (!enabled) {
+      setShowAlert(true)
+      return true
+    }
+
+    return false
+  }
 
   React.useEffect(() => {
+    // Handle push notifications and permissions
+    let notificationEvent = null
+
+    hasPermission()
+      .then(async enabled => {
+        if (!enabled) return
+
+
+        notificationEvent = messaging().onMessage(data => {
+          //Handle notification
+        })
+      })
+
     const bootstrapAsync = async () => {
       let userToken;
 
@@ -164,6 +195,10 @@ const App = () => {
     };
 
     bootstrapAsync();
+
+    return () => {
+      if (notificationEvent) notificationEvent()
+    }
   }, []);
 
   const authContext = React.useMemo(() => ({
@@ -187,6 +222,13 @@ const App = () => {
     <ThemeProvider theme={elementsTheme}>
       <AuthContext.Provider value={authContext}>
         <NavigationContainer>
+          <Alert
+            visible={showAlert}
+            onButtonPress={() => setShowAlert(false)}
+            title={'Notifications'}
+            content={'For getting out the most of DiabetNotes please eneble Notifications'}
+            buttonTitle={'Close'}
+          />
           <Stack.Navigator>
 
             {state.userToken == null ? (

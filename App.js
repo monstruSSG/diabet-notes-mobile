@@ -92,6 +92,7 @@ const NutritionistData = () => {
       activeColor="#fff"
       inactiveColor="#f5f5f5"
       barStyle={{ backgroundColor: '#303f9f' }}
+      initialRouteName='Patients'
     >
       <TabNavigator.Screen
         name="Patients"
@@ -103,6 +104,7 @@ const NutritionistData = () => {
           ),
         }}
       />
+
       <TabNavigator.Screen
         name="NutritionistSettings"
         component={NutritionistSettings}
@@ -192,7 +194,7 @@ const App = () => {
             ) : (
                 <Stack.Screen
                   name="Data"
-                  component={NutritionistData}
+                  component={Data}
                   options={{
                     header: () => <Header
                       centerComponent={{

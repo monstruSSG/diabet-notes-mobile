@@ -1,10 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, StyleSheet, Linking } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign'
 
 import * as USER_REQUESTS from '../../requests/user'
+
+import ImagePicker from '../../common/ImagePicker'
 
 const Ranking = () => {
     let [user, setUser] = useState({})
@@ -19,6 +21,7 @@ const Ranking = () => {
                 title={`Reminders`}
                 containerStyle={[styles.card]}
             >
+                <ImagePicker />
                 {user && !user.nutritionist ? <ListItem
                     leftIcon={
                         <Icon
@@ -48,22 +51,6 @@ const Ranking = () => {
                 <ListItem
                     leftIcon={
                         <Icon
-                            name="phone"
-                            size={35}
-                        />
-                    }
-                    rightIcon={
-                        <Icon
-                            name="right"
-                            size={35}
-                        />
-                    }
-                    title='Appointment'
-                    subtitle='Dont`t forgate to make an appointment for the nutritionist'
-                    bottomDivider />
-                <ListItem
-                    leftIcon={
-                        <Icon
                             name="inbox"
                             size={35}
                         />
@@ -77,6 +64,24 @@ const Ranking = () => {
                     title='Last analyses'
                     subtitle='Add and see previous analyses'
                     bottomDivider />
+                <ListItem
+                    leftIcon={
+                        <Icon
+                            name="phone"
+                            size={35}
+                        />
+                    }
+                    rightIcon={
+                        <Icon
+                            name="right"
+                            size={35}
+                        />
+                    }
+                    title='Appointment'
+                    subtitle='Dont`t forgate to make an appointment for the nutritionist'
+                    bottomDivider
+                    onPress={() => Linking.openURL(`tel:${user.nutritionist.phoneNumber || ''}`)}
+                />
                 {user && user.nutritionist ? <ListItem
                     leftIcon={
                         <Icon

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "886869929838",
+    "firebase_url": "https://diabetnotes.firebaseio.com",
+    "project_id": "diabetnotes",
+    "storage_bucket": "diabetnotes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886869929838:android:ea8637ef6c9b8645ec1b7f",
+        "android_client_info": {
+          "package_name": "com.diabetnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886869929838-43tcbrd2bepq724i31fvl2lambag0br0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP23rNz2roGjleEvWBysa6j1R0D2CHDTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886869929838-43tcbrd2bepq724i31fvl2lambag0br0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

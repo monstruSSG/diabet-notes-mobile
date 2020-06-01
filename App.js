@@ -7,7 +7,10 @@ import { ThemeProvider, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Firebase from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
+import { connect } from 'react-redux'
+import AsyncStorage from '@react-native-community/async-storage';
 
+import * as USER from './src/store/actions/user'
 import Login from './src/screens/Login/Login';
 import Nutritionists from './src/screens/Nutritionists/Nutritionists';
 import Overview from './src/screens/Overview/Overview';
@@ -20,8 +23,8 @@ import PatientDetails from './src/screens/PatientDetails/PatientDetails'
 import Patients from './src/screens/Patients/Patient'
 import Alert from './src/common/Alert'
 
+
 import elementsTheme from './elementsStyles';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
 
@@ -122,36 +125,7 @@ const NutritionistData = () => {
   );
 }
 
-
-const AuthContext = React.createContext();
-
-const App = () => {
-  const [state, dispatch] = React.useReducer((prevState, action) => {
-    switch (action.type) {
-      case 'RESTORE_TOKEN':
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'SIGN_IN':
-        return {
-          ...prevState,
-          isSignout: false,
-          userToken: action.token,
-        };
-      case 'SIGN_OUT':
-        return {
-          ...prevState,
-          isSignout: true,
-          userToken: null,
-        };
-    }
-  }, {
-    isLoading: true,
-    isSignout: false,
-    userToken: null,
-  });
+const App = props => {
   const [showAlert, setShowAlert] = useState(false)
 
   const hasPermission = async () => {
@@ -171,11 +145,11 @@ const App = () => {
   React.useEffect(() => {
     // Handle push notifications and permissions
     let notificationEvent = null
-
+    console.log(props.user)
     hasPermission()
       .then(async enabled => {
         if (!enabled) return
-        
+
 
         notificationEvent = messaging().onMessage(data => {
           //Handle notification
@@ -187,11 +161,11 @@ const App = () => {
 
       try {
         userToken = await AsyncStorage.getItem('token');
+        props.signIn(userToken)
       } catch (e) {
         userToken = null
+        props.signOut()
       }
-
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
 
     bootstrapAsync();
@@ -199,62 +173,52 @@ const App = () => {
     return () => {
       if (notificationEvent) notificationEvent()
     }
-  }, []);
-
-  const authContext = React.useMemo(() => ({
-    signIn: async (email, password) => {
-      let result = await LOGIN_REQUESTS.login(email, password)
-
-      await AsyncStorage.setItem('token', result.token)
-
-      dispatch({ type: 'SIGN_IN', token: result.token });
-    },
-    signOut: async () => {
-      await AsyncStorage.removeItem('token')
-      dispatch({ type: 'SIGN_OUT' })
-    },
-    signUp: async data => {
-      dispatch({ type: 'SIGN_IN', token: 'our_token' });
-    },
-  }), []);
+  }, [props.user.userToken, props.user.isLoading]);
 
   return (
     <ThemeProvider theme={elementsTheme}>
-      <AuthContext.Provider value={authContext}>
-        <NavigationContainer>
-          <Alert
-            visible={showAlert}
-            onButtonPress={() => setShowAlert(false)}
-            title={'Notifications'}
-            content={'For getting out the most of DiabetNotes please eneble Notifications'}
-            buttonTitle={'Close'}
-          />
-          <Stack.Navigator>
+      <NavigationContainer>
+        <Alert
+          visible={showAlert}
+          onButtonPress={() => setShowAlert(false)}
+          title={'Notifications'}
+          content={'For getting out the most of DiabetNotes please eneble Notifications'}
+          buttonTitle={'Close'}
+        />
+        <Stack.Navigator>
+          {!props.user.userToken || props.user.isLoading ? (
+            <Stack.Screen name="Login" component={Login} options={{ header: () => null }} />
+          ) : (
+              <Stack.Screen
+                name="Data"
+                component={Data}
+                options={{
+                  header: () => <Header
+                    centerComponent={{
+                      text: 'DiabetNotes',
+                      style: {
+                        color: '#fff',
+                        fontSize: 25
+                      }
+                    }} />
+                }}
+              />
+            )}
+        </Stack.Navigator>
+      </NavigationContainer>
 
-            {state.userToken == null ? (
-              <Stack.Screen name="Login" component={Login} options={{ header: () => null }} />
-            ) : (
-                <Stack.Screen
-                  name="Data"
-                  component={Data}
-                  options={{
-                    header: () => <Header
-                      centerComponent={{
-                        text: 'DiabetNotes',
-                        style: {
-                          color: '#fff',
-                          fontSize: 25
-                        }
-                      }} />
-                  }}
-                />
-              )}
-          </Stack.Navigator>
-        </NavigationContainer>
-
-      </AuthContext.Provider>
     </ThemeProvider>
   );
 }
 
-export default App;
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  signIn: token => dispatch(USER.signIn(token)),
+  signOut: () => dispatch(USER.signOut()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

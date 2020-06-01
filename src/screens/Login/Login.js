@@ -1,16 +1,22 @@
 import React from 'react';
 import { View, KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { Text, SocialIcon } from 'react-native-elements';
+import { Text } from 'react-native-elements';
+import { connect } from 'react-redux'
 
 import Form from '../../common/FormGenerator/FormGenerator'
 import * as LOGIN_REQUESTS from '../../requests/login'
+import * as USER from '../../store/actions/user'
 
 const Login = props => {
+
     const loginHandler = (email, password) => {
         return LOGIN_REQUESTS.login(email, password)
-            .then(() => props.navigation.navigate('Data'))
+            .then(data => {
+                console.log(props.signIn, 'AICI')
+                props.signIn(data.token)
+            })
     }
-    
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -31,7 +37,7 @@ const Login = props => {
                         }
                     ]}
                     submitText='Sign in'
-                    onSubmitPressed={({email, password}) => loginHandler(email, password)}
+                    onSubmitPressed={({ email, password }) => loginHandler(email, password)}
                 />
             </View>
         </KeyboardAvoidingView>
@@ -60,4 +66,12 @@ let styles = StyleSheet.create({
     }
 })
 
-export default Login;
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+const mapDispatchToProps = dispatch => ({
+    signIn: token => dispatch(USER.signIn(token))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -6,6 +6,12 @@ export const get = async () => {
     return { ...data }
 }
 
+export const register = async userData => {
+    let { data } = await axios.post('/users', { user: { ...userData } })
+
+    return data
+}
+
 export const getMe = async () => {
     let { data } = await axios.get('/users/me')
 

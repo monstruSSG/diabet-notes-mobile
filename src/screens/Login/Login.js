@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
 import { connect } from 'react-redux'
 
 import Form from '../../common/FormGenerator/FormGenerator'
@@ -12,7 +12,6 @@ const Login = props => {
     const loginHandler = (email, password) => {
         return LOGIN_REQUESTS.login(email, password)
             .then(data => {
-                console.log(props.signIn, 'AICI')
                 props.signIn(data.token)
             })
     }
@@ -39,6 +38,8 @@ const Login = props => {
                     submitText='Sign in'
                     onSubmitPressed={({ email, password }) => loginHandler(email, password)}
                 />
+                <Text style={{ padding: 20, color: '#bdbdbd' }}>-------- or --------</Text>
+                <Button onPress={() => props.navigation.navigate('Register')} title='Register' />
             </View>
         </KeyboardAvoidingView>
     );

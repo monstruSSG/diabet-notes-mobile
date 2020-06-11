@@ -22,7 +22,7 @@ import NutritionistSettings from './src/screens/NutritionistSettings/Nutritionis
 import PatientDetails from './src/screens/PatientDetails/PatientDetails'
 import Patients from './src/screens/Patients/Patient'
 import Alert from './src/common/Alert'
-
+import Register from './src/screens/Register/Register'
 
 import elementsTheme from './elementsStyles';
 
@@ -128,6 +128,8 @@ const NutritionistData = () => {
 const App = props => {
   const [showAlert, setShowAlert] = useState(false)
 
+  AsyncStorage.removeItem('token')
+
   const hasPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -187,7 +189,10 @@ const App = props => {
         />
         <Stack.Navigator>
           {!props.user.userToken || props.user.isLoading ? (
-            <Stack.Screen name="Login" component={Login} options={{ header: () => null }} />
+            <>
+              <Stack.Screen name="Login" component={Login} options={{ header: () => null }} />
+              <Stack.Screen name="Register" component={Register} />
+            </>
           ) : (
               <Stack.Screen
                 name="Data"

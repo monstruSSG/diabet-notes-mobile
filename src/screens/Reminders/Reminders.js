@@ -15,6 +15,14 @@ const Ranking = () => {
         USER_REQUESTS.getMe().then(setUser)
     }, [])
 
+    let makeAppointment = async () => {
+        let result = await USER_REQUESTS.makeAppointment()
+
+        console.log(result, 'RESULT AICI')
+
+        return true
+    }
+
     return (
         <View style={[styles.max, styles.center]}>
             <Card
@@ -78,6 +86,24 @@ const Ranking = () => {
                     }
                     title='Appointment'
                     subtitle='Dont`t forgate to make an appointment for the nutritionist'
+                    bottomDivider
+                    onPress={() => makeAppointment()}
+                />
+                <ListItem
+                    leftIcon={
+                        <Icon
+                            name="phone"
+                            size={35}
+                        />
+                    }
+                    rightIcon={
+                        <Icon
+                            name="right"
+                            size={35}
+                        />
+                    }
+                    title='Call nutritionist'
+                    subtitle='You can call your nutritionist in case of any emergency'
                     bottomDivider
                     onPress={() => Linking.openURL(`tel:${user.nutritionist.phoneNumber || ''}`)}
                 />

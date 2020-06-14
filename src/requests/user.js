@@ -17,3 +17,9 @@ export const getMe = async () => {
 
     return { ...data }
 }
+
+export const makeAppointment = async () => {
+    let { data } = await axios.patch(`/users/nutritionists/appointment`)
+
+    return data
+}

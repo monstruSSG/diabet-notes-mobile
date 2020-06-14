@@ -128,8 +128,6 @@ const NutritionistData = () => {
 const App = props => {
   const [showAlert, setShowAlert] = useState(false)
 
-  AsyncStorage.removeItem('token')
-
   const hasPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
